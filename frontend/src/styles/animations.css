@@ -1,0 +1,107 @@
+/* =============================================================
+ * Fichier  : animations.css
+ * Role     : Keyframes et classes d'animation globales du projet
+ * Auteur   : PFE CIAR - M2 ISI 2025/2026
+ * ============================================================= */
+
+/* =============================================================
+ * KEYFRAMES - ANIMATIONS DE BASE
+ * ============================================================= */
+
+/* Apparition par fondu */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Apparition par fondu + glissement depuis le bas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apparition par fondu + glissement depuis la gauche */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pulsation douce - utilisee sur les badges d'alerte */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+/* Rotation continue - utilisee sur le loader */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Animation de la jauge de score - remplissage progressif */
+@keyframes gaugeProgress {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: var(--gauge-offset); }
+}
+
+/* Compteur chiffre - bounce leger a l'arrivee */
+@keyframes countUp {
+  0%   { transform: scale(0.8); opacity: 0; }
+  80%  { transform: scale(1.05); }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+/* Shimmer - effet de chargement squelette */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* =============================================================
+ * CLASSES D'ANIMATION UTILITAIRES
+ * ============================================================= */
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft 0.4s ease forwards;
+}
+
+.animate-spin-slow {
+  animation: spin 1.5s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Classe squelette de chargement */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    rgba(74, 127, 167, 0.15) 50%,
+    var(--border-color) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}

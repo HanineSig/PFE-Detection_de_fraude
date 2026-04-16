@@ -1,0 +1,185 @@
+/* =============================================================
+ * Fichier  : index.css
+ * Role     : Point d'entree CSS global - directives Tailwind + variables DA
+ * Auteur   : PFE CIAR - M2 ISI 2025/2026
+ * ============================================================= */
+/* Importation de la police Inter depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Directives Tailwind CSS - ordre important */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* =============================================================
+ * VARIABLES CSS - DESIGN SYSTEM CIAR
+ * Palette de couleurs officielle du projet
+ * Ces variables sont utilisees dans tout le projet
+ * ============================================================= */
+:root {
+  /* --- Couleurs de base --- */
+  --primary-dark: #0A1931;
+  --secondary-blue-light: #B3CFE5;
+  --secondary-blue-mid: #4A7FA7;
+  --secondary-blue-dark: #1A3D63;
+  --background-light: #F6FAFD;
+
+  /* --- Couleurs semantiques - scores de fraude --- */
+  --color-success: #22C55E;
+  /* Score faible : legitime */
+  --color-warning: #F59E0B;
+  /* Score moyen  : suspect  */
+  --color-danger: #EF4444;
+  /* Score eleve  : fraude   */
+
+  /* --- Variables de theme (mode clair par defaut) --- */
+  --bg-primary: #F6FAFD;
+  --bg-card: #FFFFFF;
+  --text-primary: #0A1931;
+  --text-secondary: #4A7FA7;
+  --border-color: rgba(10, 25, 49, 0.1);
+
+  /* --- Typographie --- */
+  --font-family: 'Inter', sans-serif;
+
+  /* --- Rayons et ombres --- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --shadow-sm: 0 1px 3px rgba(10, 25, 49, 0.08);
+  --shadow-md: 0 4px 12px rgba(10, 25, 49, 0.12);
+  --shadow-lg: 0 8px 24px rgba(10, 25, 49, 0.16);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* =============================================================
+ * THEME SOMBRE - s'active via la classe .dark sur <html>
+ * ============================================================= */
+.dark {
+  --bg-primary: #0A1931;
+  --bg-card: #1A3D63;
+  --text-primary: #F6FAFD;
+  --text-secondary: #B3CFE5;
+  --border-color: rgba(179, 207, 229, 0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* =============================================================
+ * RESET ET BASE
+ * ============================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  min-height: 100vh;
+}
+
+/* Suppression du style de liste par defaut */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Liens sans decoration par defaut */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Images fluides par defaut */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* =============================================================
+ * SCROLLBAR PERSONNALISEE (Chrome/Edge)
+ * ============================================================= */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-blue-mid);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-blue-dark);
+}
+
+/* =============================================================
+ * UTILITAIRES GLOBAUX
+ * ============================================================= */
+
+/* Masquer visuellement mais garder accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Conteneur principal de l'application */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================================================
+ * ANIMATIONS D'ENTRÉE DES VUES AUTHENTIFICATION 
+ * Refus du slide "PowerPoint", on utilise un soft-fade.
+ * ============================================================= */
+@keyframes auth-bg-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes auth-form-enter {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-auth-bg {
+  animation: auth-bg-fade 0.5s ease-out forwards;
+}
+
+.animate-auth-form {
+  opacity: 0;
+  animation: auth-form-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
