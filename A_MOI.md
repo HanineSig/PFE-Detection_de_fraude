@@ -1103,6 +1103,17 @@ Le projet est en cours de developpement. Les elements suivants PEUVENT changer :
 
 ---
 
+### REGLE 7 -- PERSISTANCE DE L'ARCHITECTURE (GIT)
+
+**Tout dossier vide créé dans l'architecture du projet DOIT contenir un fichier `.gitkeep`.**
+
+Cela garantit que l'organisation des dossiers est préservée lors des push vers le dépôt distant (GitHub/GitLab), car Git ignore par défaut les répertoires ne contenant aucun fichier.
+
+**Action systématique :**
+- Dès la création d'un dossier (ex: `src/hooks`, `ml/data/raw`, etc.), si celui-ci est vide, y ajouter un fichier vide nommé `.gitkeep`.
+
+---
+
 ## RAPPEL -- DESIGN SYSTEM CIAR (reference rapide)
 
 ```css
