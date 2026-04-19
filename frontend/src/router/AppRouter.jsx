@@ -8,11 +8,10 @@
 /* ============================================================
  * IMPORTS
  * ============================================================ */
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 /* Pages publiques */
-import SignUp    from '../pages/SignUp';
-import Login     from '../pages/Login';
+import AuthPage  from '../pages/AuthPage';
 import NotFound  from '../pages/NotFound';
 
 /* Pages protegees (necessite d'etre connecte) */
@@ -28,85 +27,41 @@ import AppLayout from '../components/layout/AppLayout';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 /* ============================================================
+ * CONTENEUR PERSISTANT POUR L'AUTHENTIFICATION
+ * Garantit que AuthPage ne se démonte jamais lors des transitions
+ * ============================================================ */
+const RouterInner = () => {
+  const location = useLocation();
+  const isAuth = location.pathname === '/login' || location.pathname === '/signup';
+
+  return (
+    <>
+      <div className={`h-full w-full absolute inset-0 z-50 ${isAuth ? 'block' : 'hidden'}`}>
+        {/* On force le rendu permanent pour éviter les flash blancs React Router */}
+        <AuthPage />
+      </div>
+
+      <div className={`h-full w-full absolute inset-0 z-0 ${!isAuth ? 'block' : 'hidden'}`}>
+        <Routes>
+          <Route path="/" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
+          <Route path="/analyse/:id" element={<ProtectedRoute><AppLayout><AnalyseDossier /></AppLayout></ProtectedRoute>} />
+          <Route path="/alertes" element={<ProtectedRoute><AppLayout><GestionAlertes /></AppLayout></ProtectedRoute>} />
+          <Route path="/profil" element={<ProtectedRoute><AppLayout><Profil /></AppLayout></ProtectedRoute>} />
+          {/* Fallback */}
+          <Route path="*" element={!isAuth ? <NotFound /> : null} />
+        </Routes>
+      </div>
+    </>
+  );
+};
+
+/* ============================================================
  * CONFIGURATION DES ROUTES
  * ============================================================ */
-
-/**
- * AppRouter definit l'arborescence complete des routes de l'application.
- *
- * Structure :
- * - Routes publiques : /login, /signup -> accessibles sans connexion
- * - Routes protegees : / , /analyse/:id , /alertes , /profil
- *   -> redirige vers /login si non authentifie
- *   -> enveloppees dans AppLayout (sidebar + topbar)
- */
 const AppRouter = () => {
   return (
     <BrowserRouter>
-      <Routes>
-
-        {/* ----------------------------------------
-         * ROUTES PUBLIQUES
-         * Accessibles sans etre connecte
-         * ---------------------------------------- */}
-        <Route path="/login"  element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-
-        {/* Redirection de / vers /login si non connecte */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Dashboard />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ----------------------------------------
-         * ROUTES PROTEGEES - Tableau de bord et fonctionnalites
-         * Redirige vers /login si non authentifie
-         * ---------------------------------------- */}
-        <Route
-          path="/analyse/:id"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <AnalyseDossier />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/alertes"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <GestionAlertes />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/profil"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Profil />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ----------------------------------------
-         * PAGE 404 - Toute route inconnue
-         * ---------------------------------------- */}
-        <Route path="*" element={<NotFound />} />
-
-      </Routes>
+      <RouterInner />
     </BrowserRouter>
   );
 };

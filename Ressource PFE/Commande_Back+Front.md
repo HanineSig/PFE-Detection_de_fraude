@@ -38,6 +38,10 @@ Placez-vous dans le bon dossier, **activez** l'environnement virtuel, puis insta
 ```powershell
 cd "e:\Etudes\M2-ISI\PFE\Détection de fraude\Code_AG_PFE\backend"
 
+
+#REMARQUE---- Une commande a faire sur un nouveau pc ou quand on clone pour la premiere fois si on a pas le dossier venv dans le backend
+python -m venv venv
+
 # 1. Activation de l'environnement virtuel (Obligatoire à chaque ouverture du terminal)
 .\venv\Scripts\Activate.ps1
 
